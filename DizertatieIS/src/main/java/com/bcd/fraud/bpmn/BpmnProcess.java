@@ -2,7 +2,7 @@ package com.bcd.fraud.bpmn;
 
 public enum BpmnProcess {
 
-	CARD_FRAUD_DETECTION("diagrams/DetectieFrauda.bpmn", "detectieFrauda"),
+	CARD_FRAUD_DETECTION("diagrams/DetectieFrauda.bpmn", "fraudDetection"),
 	ONBOARDING("diagrams/onboarding.bpmn20.xml", "onboarding");
 	
 	private String diagramPath;

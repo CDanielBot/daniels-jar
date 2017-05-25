@@ -28,7 +28,7 @@ public class TransactionProcessorImpl extends UnicastRemoteObject implements Tra
 				transaction);
 		System.out.println("Going to run " + BpmnProcess.CARD_FRAUD_DETECTION + " process with id: "
 				+ cardFraudProcess.getId() + "!");
-		processManager.runProcess(cardFraudProcess);
+		processManager.runProcessV2(cardFraudProcess);
 
 	}
 }

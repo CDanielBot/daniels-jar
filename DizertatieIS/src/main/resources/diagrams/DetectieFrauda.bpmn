@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
-  <process id="myProcess" name="My process" isExecutable="true">
+  <process id="fraudDetection" name="Fraud Detection" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <serviceTask id="servicetask3" name="Validate Transaction" activiti:class="com.bcd.fraud.bpmn.task.TransactionValidationTask"></serviceTask>
+    <serviceTask id="servicetask3" name="Validate Transaction" activiti:class="com.bcd.fraud.bpmn.task.ValidateTransactionTask"></serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flow1" sourceRef="servicetask3" targetRef="exclusivegateway1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <serviceTask id="servicetask5" name="Reject Transaction" activiti:class="com.bcd.fraud.bpmn.task.RejectTransactionTask"></serviceTask>
     <sequenceFlow id="flow4" name="transaction invalid" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid} == false]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid == false}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="Calculate Score" activiti:class="com.bcd.fraud.bpmn.task.CalculateScoreTask"></serviceTask>
     <sequenceFlow id="flow5" name="transaction valid" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid} == true]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid == true}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Execute Fraud Rules" activiti:class="com.bcd.fraud.bpmn.task.ExecuteFraudRulesTask"></serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
