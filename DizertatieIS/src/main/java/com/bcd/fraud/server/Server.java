@@ -1,28 +1,36 @@
 package com.bcd.fraud.server;
 
 import java.rmi.Naming;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
-import java.rmi.server.UnicastRemoteObject;
+
+import com.bcd.fraud.bpmn.BpmnProcess;
+import com.bcd.fraud.bpmn.ProcessManager;
 
 public class Server {
 
 	public static void main(String args[]) {
-		init();
+		Server server = new Server();
+		server.init();
+		System.err.println("Server ready");
+	}
+	private final ProcessManager processManager;
+	
+	private Server() {
+		processManager = new ProcessManager();
 	}
 
-	private static void init() {
+	private void init() {
+		makeServicePublic();
+		deployBpmnProcesses();
+	}
+	
+
+	private void deployBpmnProcesses(){
+		processManager.deployProcess(BpmnProcess.CARD_FRAUD_DETECTION);
+	}
+	
+	private void makeServicePublic(){
 		try {
 			Naming.rebind("//localhost/TransactionProcessor", new TransactionProcessorImpl());
-			// TransactionProcessorImpl obj = new TransactionProcessorImpl();
-			// TransactionProcessor stub = (TransactionProcessor)
-			// UnicastRemoteObject.exportObject(obj, 0);
-			//
-			// // Bind the remote object's stub in the registry
-			// Registry registry = LocateRegistry.getRegistry(2017);
-			// registry.bind("TransactionProcessor", stub);
-
-			System.err.println("Server ready");
 		} catch (Exception e) {
 			System.err.println("Server exception: " + e.toString());
 			e.printStackTrace();

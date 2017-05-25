@@ -28,6 +28,8 @@ import org.activiti.engine.repository.ProcessDefinition;
 import org.activiti.engine.runtime.ProcessInstance;
 import org.activiti.engine.task.Task;
 
+import com.bcd.fraud.Transaction;
+
 public class ProcessManager {
 
 	private ProcessEngine processEngine;
@@ -35,8 +37,27 @@ public class ProcessManager {
 	public ProcessManager() {
 		this.processEngine = loadProcessEngine();
 	}
+	
+	public void runProcessV2(ProcessDefinition processDefinition, ProcessInstance processInstance) {
+		
+		TaskService taskService = processEngine.getTaskService();
+		
+		RuntimeService runtimeService = processEngine.getRuntimeService();
+		while (processInstance != null && !processInstance.isEnded()) {
+			 List<Task> tasks = taskService.createTaskQuery()
+			          .taskCandidateGroup("managers").list();
+			      System.out.println("Active outstanding tasks: [" + tasks.size() + "]");
+			      for (int i = 0; i < tasks.size(); i++) {
+			        Task task = tasks.get(i);
+			        System.out.println("Processing Task [" + task.getName() + "]");
+			        Map<String, Object> variables = new HashMap<String, Object>();
+			        taskService.complete(task.getId(), variables);
+			      }
+		}
+	}
 
-	public void runProcess(ProcessDefinition processDefinition,ProcessInstance processInstance) throws ParseException{
+	public void runProcess(ProcessInstance processInstance){
+		
 		Scanner scanner = new Scanner(System.in);
 		
 		TaskService taskService = processEngine.getTaskService();
@@ -64,8 +85,13 @@ public class ProcessManager {
 		          } else if (DateFormType.class.isInstance(formProperty.getType())) {
 		            System.out.println(formProperty.getName() + "? (Must be a date m/d/yy)");
 		            DateFormat dateFormat = new SimpleDateFormat("m/d/yy");
-		            Date value = dateFormat.parse(scanner.nextLine());
-		            variables.put(formProperty.getId(), value);
+					try {
+						Date value = dateFormat.parse(scanner.nextLine());
+						 variables.put(formProperty.getId(), value);
+					} catch (ParseException e) {
+						e.printStackTrace();
+					}
+		           
 		          } else {
 		            System.out.println("<form type not supported>");
 		          }
@@ -80,7 +106,7 @@ public class ProcessManager {
 		            .list();
 		        for (HistoricActivityInstance activity : activities) {
 		          if (activity.getActivityType() == "startEvent") {
-		            System.out.println("BEGIN " + processDefinition.getName() 
+		            System.out.println("BEGIN " + processInstance.getProcessDefinitionName() 
 		                + " [" + processInstance.getProcessDefinitionKey()
 		                + "] " + activity.getStartTime());
 		          }
@@ -99,7 +125,7 @@ public class ProcessManager {
 		          System.out.println("-- " + endActivity.getActivityName() 
 		                + " [" + endActivity.getActivityId() + "] "
 		                + endActivity.getDurationInMillis() + " ms");
-		          System.out.println("COMPLETE " + processDefinition.getName() + " ["
+		          System.out.println("COMPLETE " + processInstance.getProcessDefinitionName() + " ["
 		                + processInstance.getProcessDefinitionKey() + "] " 
 		                + endActivity.getEndTime());
 		        }
@@ -112,9 +138,11 @@ public class ProcessManager {
 		    
 	}
 
-	public ProcessInstance startProcessInstance(BpmnProcess process) {
+	public ProcessInstance startProcessInstance(BpmnProcess process, Transaction transaction) {
 		RuntimeService runtimeService = processEngine.getRuntimeService();
-		ProcessInstance processInstance = runtimeService.startProcessInstanceByKey(process.getProcessKey());
+		Map<String,Object> processVariables = new HashMap<>();
+		processVariables.put("transaction", transaction);
+		ProcessInstance processInstance =runtimeService.startProcessInstanceByKey(process.getProcessKey(), processVariables);
 		System.out.println("Onboarding process started with process instance id ["
 				+ processInstance.getProcessInstanceId() + "] key [" + processInstance.getProcessDefinitionKey() + "]");
 		return processInstance;

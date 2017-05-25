@@ -13,10 +13,9 @@ public class OnboardingRequest {
   public static void main(String[] args) throws ParseException {
 	  ProcessManager processManager = new ProcessManager();
 	  
-	  ProcessDefinition onboardingProcessDefinition = processManager.deployProcess(BpmnProcess.Onboarding);
-	  ProcessInstance onboardProcessInstance = processManager.startProcessInstance(BpmnProcess.Onboarding);
-	  
-	  processManager.runProcess(onboardingProcessDefinition, onboardProcessInstance);
+	  ProcessDefinition onboardingProcessDefinition = processManager.deployProcess(BpmnProcess.ONBOARDING);
+	  ProcessInstance onboardProcessInstance = processManager.startProcessInstance(BpmnProcess.ONBOARDING, null);
+	  processManager.runProcess(onboardProcessInstance);
 	  
   }
 }
