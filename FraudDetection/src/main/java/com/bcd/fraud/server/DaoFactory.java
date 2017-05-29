@@ -8,7 +8,7 @@ public final class DaoFactory {
 		IN_MEMORY {
 			@Override
 			TransactionDAO createNewTransactionDao() {
-				return new TransactionDaoInMemory();
+				return TransactionDaoInMemory.getInstance();
 			}
 		}, DATABASE {
 			@Override

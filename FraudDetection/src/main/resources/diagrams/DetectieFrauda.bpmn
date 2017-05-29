@@ -2,17 +2,17 @@
 <definitions xmlns="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:activiti="http://activiti.org/bpmn" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:omgdc="http://www.omg.org/spec/DD/20100524/DC" xmlns:omgdi="http://www.omg.org/spec/DD/20100524/DI" typeLanguage="http://www.w3.org/2001/XMLSchema" expressionLanguage="http://www.w3.org/1999/XPath" targetNamespace="http://www.activiti.org/test">
   <process id="processFraudDetection" name="Fraud Detection" isExecutable="true">
     <startEvent id="startevent1" name="Start"></startEvent>
-    <serviceTask id="servicetask3" name="Validate Transaction" activiti:class="com.bcd.fraud.bpmn.task.TransactionValidationTask"></serviceTask>
+    <serviceTask id="servicetask3" name="Validate Transaction" activiti:class="com.bcd.fraud.bpmn.task.ValidateTransactionTask"></serviceTask>
     <exclusiveGateway id="exclusivegateway1" name="Exclusive Gateway"></exclusiveGateway>
     <sequenceFlow id="flowAfterValidation" sourceRef="servicetask3" targetRef="exclusivegateway1"></sequenceFlow>
     <endEvent id="endevent1" name="End"></endEvent>
     <serviceTask id="servicetask5" name="Reject Transaction" activiti:class="com.bcd.fraud.bpmn.task.RejectTransactionTask"></serviceTask>
     <sequenceFlow id="flowTransactionInvalid" name="transaction invalid" sourceRef="exclusivegateway1" targetRef="servicetask5">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid} == false]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid == false}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask6" name="Calculate Score" activiti:class="com.bcd.fraud.bpmn.task.CalculateScoreTask"></serviceTask>
     <sequenceFlow id="flowTransactionValid" name="transaction valid" sourceRef="exclusivegateway1" targetRef="servicetask6">
-      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid} == true]]></conditionExpression>
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isTransactionValid == true}]]></conditionExpression>
     </sequenceFlow>
     <serviceTask id="servicetask7" name="Execute Fraud Rules" activiti:class="com.bcd.fraud.bpmn.task.ExecuteFraudRulesTask"></serviceTask>
     <exclusiveGateway id="exclusivegateway2" name="Exclusive Gateway"></exclusiveGateway>
@@ -20,11 +20,15 @@
     <serviceTask id="servicetask8" name="Block Transaction" activiti:class="com.bcd.fraud.bpmn.task.BlockTransactionTask"></serviceTask>
     <endEvent id="endevent2" name="End"></endEvent>
     <sequenceFlow id="flowTransactionBlocked" sourceRef="servicetask8" targetRef="endevent2"></sequenceFlow>
-    <sequenceFlow id="flowBlockTransaction" sourceRef="exclusivegateway2" targetRef="servicetask8"></sequenceFlow>
+    <sequenceFlow id="flowBlockTransaction" sourceRef="exclusivegateway2" targetRef="servicetask8">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isRuleTriggered == true}]]></conditionExpression>
+    </sequenceFlow>
     <serviceTask id="servicetask9" name="Finalize Transaction" activiti:class="com.bcd.fraud.bpmn.task.FinalizeTransactionTask"></serviceTask>
     <endEvent id="endevent3" name="End"></endEvent>
     <sequenceFlow id="flowTransactionFinalized" sourceRef="servicetask9" targetRef="endevent3"></sequenceFlow>
-    <sequenceFlow id="flowBeforeFinalizeTransaction" sourceRef="exclusivegateway2" targetRef="servicetask9"></sequenceFlow>
+    <sequenceFlow id="flowBeforeFinalizeTransaction" sourceRef="exclusivegateway2" targetRef="servicetask9">
+      <conditionExpression xsi:type="tFormalExpression"><![CDATA[${isRuleTriggered != true}]]></conditionExpression>
+    </sequenceFlow>
     <sequenceFlow id="flowAfterScoreCalculation" sourceRef="servicetask6" targetRef="servicetask7"></sequenceFlow>
     <sequenceFlow id="flowStartToValidation" sourceRef="startevent1" targetRef="servicetask3"></sequenceFlow>
     <sequenceFlow id="flowTransactionRejected" sourceRef="servicetask5" targetRef="endevent1"></sequenceFlow>

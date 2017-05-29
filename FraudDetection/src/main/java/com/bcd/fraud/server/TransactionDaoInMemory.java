@@ -12,6 +12,15 @@ public class TransactionDaoInMemory implements TransactionDAO {
 
 	private Map<String, Transaction> inMemoryStorage = new ConcurrentHashMap<>();
 
+	private TransactionDaoInMemory() {
+	};
+	
+	private static final TransactionDaoInMemory singleton = new TransactionDaoInMemory();
+	
+	public synchronized final static TransactionDaoInMemory getInstance(){
+		return singleton;
+	}
+	
 	@Override
 	public Transaction create(Transaction t) {
 		return inMemoryStorage.put(t.getId(), t);

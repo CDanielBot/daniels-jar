@@ -35,6 +35,7 @@ public class Transaction implements Serializable {
 	private Geolocation address;
 	private String description;
 	private TransactionState state;
+	private int score;
 
 	public TransactionType getTransactionType() {
 		return transactionType;
@@ -115,5 +116,22 @@ public class Transaction implements Serializable {
 	public void setState(TransactionState state) {
 		this.state = state;
 	}
+	
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
+
+	@Override
+	public String toString() {
+		return "Transaction [id=" + id + ", transactionType=" + transactionType + ", dateTime=" + dateTime
+				+ ", currency=" + currency + ", ammount=" + ammount + ", accountNumberSource=" + accountNumberSource
+				+ ", accountNumberDestination=" + accountNumberDestination + "]";
+	}
+	
+	
 	
 }

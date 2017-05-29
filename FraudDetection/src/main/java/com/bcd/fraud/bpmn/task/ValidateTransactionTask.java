@@ -13,7 +13,7 @@ public class ValidateTransactionTask extends TaskBase {
 		Transaction transaction = getTransaction();
         System.out.println("Validating transaction with id: " + transaction.getId());
         ValidationResponse response = validate(transaction);
-        execution.setVariable(ProcessVariables.IS_VALID, response.isValid());
+        setVariable(ProcessVariables.IS_VALID, response.isValid());
     }
 
     private ValidationResponse validate(Transaction t) {

@@ -37,4 +37,8 @@ public abstract class TaskBase implements JavaDelegate {
 		 Transaction t = getTransaction();
 		 return transactionDAO.get(t.getId());
 	 }
+	 
+	 protected void setVariable(String variableName, Object value){
+		 execution.setVariable(variableName, value);
+	 }
 }
