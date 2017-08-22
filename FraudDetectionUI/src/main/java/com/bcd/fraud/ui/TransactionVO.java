@@ -24,16 +24,29 @@ public class TransactionVO {
 		return amount;
 	}
 
-	public SimpleStringProperty getId() {
+	public String getId(){
+		return id.get();
+	}
+	
+	public SimpleStringProperty idProperty() {
 		return id;
 	}
 
-	public SimpleStringProperty getType() {
+	public String getType(){
+		return type.get();
+	}
+	
+	public SimpleStringProperty typeProperty() {
 		return type;
 	}
+	
+	public String getAmount(){
+		return amount.get();
+	}
 
-	public SimpleStringProperty getAmount() {
+	public SimpleStringProperty amountProperty() {
 		return amount;
 	}
+	
 	
 }

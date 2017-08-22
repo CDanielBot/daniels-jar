@@ -30,6 +30,12 @@ public class PotentialFraudsTable extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
+	
+	public Stage getStage(){
+		 Stage stage = new Stage();
+		 start(stage);
+		 return stage;
+	}
 
 	@Override
 	public void start(Stage stage) {
@@ -39,9 +45,9 @@ public class PotentialFraudsTable extends Application {
 
 	private void loadTableConfig(Stage stage) {
 		Scene scene = new Scene(new Group());
-		stage.setTitle("Table View Sample");
-		stage.setWidth(300);
-		stage.setHeight(500);
+		stage.setTitle("Pottential Fraud Table");
+		stage.setWidth(700);
+		stage.setHeight(550);
 
 		final Label label = new Label("Address Book");
 		label.setFont(new Font("Arial", 20));
