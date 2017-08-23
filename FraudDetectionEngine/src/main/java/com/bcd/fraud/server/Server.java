@@ -55,11 +55,11 @@ public class Server {
 
         final String command = startCmdLineCommand + " " + changeToClassesDir + " & " + startRmiCommand;
 
-        final Process rocess = Runtime.getRuntime().exec(command);
+        final Process process = Runtime.getRuntime().exec(command);
 
-        new Thread(new ReadErrorStream(rocess)).start();
+        new Thread(new ReadErrorStream(process)).start();
 
-        rocess.waitFor();
+        process.waitFor();
     }
 
     private static class ReadErrorStream implements Runnable {

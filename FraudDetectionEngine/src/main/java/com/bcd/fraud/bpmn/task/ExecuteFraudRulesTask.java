@@ -12,7 +12,7 @@ public class ExecuteFraudRulesTask extends TaskBase {
 	@Override
 	public void execute() throws Exception {
 
-		System.out.println("Executing fraud rules for transaction with id: " + getTransaction().getId());
+		System.out.println("Executing fraud rules for transaction [id: " + getTransaction().getId() + "]");
 		boolean isAnyRuleTriggered = executeRules();
 		setVariable(ProcessVariables.IS_RULE_TRIGGERED, isAnyRuleTriggered);
 	}

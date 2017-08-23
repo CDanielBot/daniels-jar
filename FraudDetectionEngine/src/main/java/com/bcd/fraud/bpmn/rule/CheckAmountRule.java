@@ -16,7 +16,6 @@ public class CheckAmountRule extends FraudDetectionRule{
 		Transaction transaction = getTransaction();
 		if(transaction.getTransactionType() == TransactionType.Withdrawal &&
 				transaction.getAmmount().compareTo(new BigDecimal(99_999_999)) > 0){
-			//fraud detected
 			trigger();
 		}
 	}

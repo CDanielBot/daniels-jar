@@ -25,16 +25,15 @@ public class TransactionServiceBpmn extends UnicastRemoteObject implements Trans
 
 	@Override
 	public boolean uploadTransaction(Transaction transaction) throws RemoteException {
-		System.out.println("Transaction received: " + transaction.getId());
-		System.out.println("Inserting transaction in storage");
+		System.out
+				.println("\nTransaction [id: " + transaction.getId() + " ] received. Inserting transaction in storage");
 		transactionDAO.create(transaction);
-		System.out.println("Starting a new " + BpmnProcess.CARD_FRAUD_DETECTION + " process!");
+		System.out.println("Running a new " + BpmnProcess.CARD_FRAUD_DETECTION + " process!");
 		ProcessInstance cardFraudProcess = processManager.startProcessInstance(BpmnProcess.CARD_FRAUD_DETECTION,
 				transaction);
-		System.out.println("Running " + BpmnProcess.CARD_FRAUD_DETECTION + " process with id: "
-				+ cardFraudProcess.getId() + "!");
+		System.out.println("Flow for card fraud detection process [id: " + cardFraudProcess.getId() + "]");
 		processManager.runProcessV2(cardFraudProcess);
-		
+
 		return true;
 	}
 

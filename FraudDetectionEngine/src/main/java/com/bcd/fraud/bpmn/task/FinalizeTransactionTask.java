@@ -7,8 +7,8 @@ public class FinalizeTransactionTask extends TaskBase {
 
 	@Override
 	public void execute() throws Exception {
-		// TODO Auto-generated method stub
 		Transaction storedTransaction = getStoredTransaction();
+		System.out.println("Successfully checked transaction [id: " + storedTransaction.getId() + "] for card fraud. No fraud detected!");
 		storedTransaction.setState(TransactionState.Success);
 		transactionDAO.update(storedTransaction);
 	}

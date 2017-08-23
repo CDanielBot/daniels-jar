@@ -13,7 +13,6 @@ public class CheckLocationRule extends FraudDetectionRule{
 	public void execute() {
 		
 		Geolocation address = getTransaction().getAddress();
-		
 		if(address.getLatitude() > 35 && address.getLatitude() < 40 &&
 				address.getLongitude() > 130 && address.getLongitude() < 140){
 			trigger();

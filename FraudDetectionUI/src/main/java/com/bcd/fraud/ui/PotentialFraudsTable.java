@@ -46,13 +46,14 @@ public class PotentialFraudsTable extends Application {
 	private void loadTableConfig(Stage stage) {
 		Scene scene = new Scene(new Group());
 		stage.setTitle("Pottential Fraud Table");
-		stage.setWidth(700);
-		stage.setHeight(550);
+		stage.setWidth(1200);
+		stage.setHeight(700);
 
-		final Label label = new Label("Address Book");
+		final Label label = new Label("Potential fraud transactions");
 		label.setFont(new Font("Arial", 20));
 
 		transactionsTable.setEditable(false);
+		transactionsTable.setMinSize(1000, 600);
 		transactionsTable.getColumns().addAll(ColumnsGenerator.generateColumns());
 
 		final VBox vbox = new VBox();
@@ -96,18 +97,26 @@ public class PotentialFraudsTable extends Application {
 		static List<TableColumn<TransactionVO, String>> generateColumns() {
 
 			TableColumn<TransactionVO, String> idCol = new TableColumn<>("Id");
-			idCol.setMinWidth(150);
+			idCol.setMinWidth(250);
 			idCol.setCellValueFactory(new PropertyValueFactory<TransactionVO, String>("id"));
 
 			TableColumn<TransactionVO, String> typeCol = new TableColumn<>("Type");
-			typeCol.setMinWidth(70);
+			typeCol.setMinWidth(120);
 			typeCol.setCellValueFactory(new PropertyValueFactory<TransactionVO, String>("type"));
 
 			TableColumn<TransactionVO, String> amountCol = new TableColumn<>("Amount");
-			amountCol.setMinWidth(70);
+			amountCol.setMinWidth(100);
 			amountCol.setCellValueFactory(new PropertyValueFactory<TransactionVO, String>("amount"));
+			
+			TableColumn<TransactionVO, String> dateTimeCol = new TableColumn<>("Date/Time");
+			dateTimeCol.setMinWidth(150);
+			dateTimeCol.setCellValueFactory(new PropertyValueFactory<TransactionVO, String>("dateTime"));
 
-			return Arrays.asList(idCol, typeCol, amountCol);
+			TableColumn<TransactionVO, String> accountNumberCol = new TableColumn<>("Account Number");
+			accountNumberCol.setMinWidth(180);
+			accountNumberCol.setCellValueFactory(new PropertyValueFactory<TransactionVO, String>("accountNumber"));
+			
+			return Arrays.asList(idCol, typeCol, amountCol, dateTimeCol, accountNumberCol);
 
 		}
 	}

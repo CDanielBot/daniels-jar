@@ -11,7 +11,7 @@ public class ValidateTransactionTask extends TaskBase {
     @Override
     public void execute() throws Exception {
 		Transaction transaction = getTransaction();
-        System.out.println("Validating transaction with id: " + transaction.getId());
+        System.out.println("Validating transaction [id: " + transaction.getId() + "]");
         ValidationResponse response = validate(transaction);
         setVariable(ProcessVariables.IS_VALID, response.isValid());
     }
